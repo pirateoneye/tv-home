@@ -44,6 +44,35 @@ launcher/build-and-install.sh                               # build + install th
 
 Undo everything with `tools/restore.sh <the same list>`.
 
+## Windows / Xiaomi profile
+
+This checkout uses a compact **YouTube + Netflix** dock and Xiaomi Live TV for the Inputs fallback.
+Casting, Miracast, USB media, voice search, streaming apps, and system updates remain enabled.
+Only the stock Google TV launcher and `com.google.android.tungsten.setupwraith` were disabled for
+user 0 after testing that setting the default launcher alone did not retain the Home-button choice.
+Nothing was uninstalled or cleared.
+
+Build with JDK 17 and Android SDK platform/build-tools 34:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File launcher/build.ps1 -JavaHome "C:\path\to\jdk-17" -Sdk "C:\path\to\Android\Sdk"
+```
+
+The self-contained APK is `launcher/build/tvhome.apk`; the TV needs no Python, Java, or extra runtime.
+The build script only builds: it never installs or changes TV settings. The Windows build preserves
+UTF-8 glyphs, normalizes asset ZIP paths, and keeps Android resources uncompressed and aligned.
+
+Restore using the pre-change backup folder:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/restore.ps1 -BackupPath "backup\YOUR-BACKUP"
+```
+
+Alternatively, double-click `Restore-TV.cmd` inside that backup folder. The script asks for confirmation,
+restores the exact original enabled states and Home activity, revokes the new launcher's location grant,
+and disables the new launcher without uninstalling it. Backups and TV screenshots stay local and are
+git-ignored. See [Windows deployment and controls](docs/windows-xiaomi.md).
+
 ## What's here
 
 | Path | What it is |
@@ -55,6 +84,7 @@ Undo everything with `tools/restore.sh <the same list>`.
 | [tools/find-tv.sh](tools/find-tv.sh) | Finds Android TVs on your Wi-Fi |
 | [tools/type.sh](tools/type.sh) | Type into the TV's on-screen keyboard from your laptop (`tools/type.sh` alone prompts hidden, for passwords) |
 | [tools/disable.sh](tools/disable.sh), [tools/restore.sh](tools/restore.sh) | Apply / undo a debloat list |
+| [launcher/build.ps1](launcher/build.ps1), [tools/restore.ps1](tools/restore.ps1) | Windows APK build and interactive backup-based restore |
 | [examples/](examples/) | Debloat lists per TV model |
 
 ## The launcher
@@ -90,7 +120,7 @@ Change the dock: edit `config.xml`, then run `launcher/build-and-install.sh`.
 
 Android TV and Google TV: TCL, Xiaomi/Redmi, Hisense, Sony, OnePlus, Realme, Nvidia Shield,
 Chromecast with Google TV and most others. Not Samsung (Tizen), LG (webOS) or Fire TV.
-Tested on: TCL Google TV (Android 11). Add yours to `examples/`.
+Tested on: TCL Google TV (Android 11) and Xiaomi MiTV-MOSR4 (Android 11). Add yours to `examples/`.
 
 ## Credits
 

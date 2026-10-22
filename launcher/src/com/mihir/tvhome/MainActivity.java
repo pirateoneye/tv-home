@@ -369,10 +369,12 @@ public class MainActivity extends Activity {
         grid.removeAllViews();
         dockCards.clear();
         gridCards.clear();
+        int dockColumns = Math.max(cols, dock.size());
+        int dockWidth = (getResources().getDisplayMetrics().widthPixels - dp(136 + 20 * (dockColumns - 1))) / dockColumns;
 
         for (int i = 0; i < dock.size(); i++) {
             View tile = tile(dock.get(i), true);
-            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(0, -2, 1f);
+            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(dockWidth, -2);
             p.setMargins(i == 0 ? 0 : dp(10), 0, i == dock.size() - 1 ? 0 : dp(10), 0);
             dockRow.addView(tile, p);
         }
