@@ -33,11 +33,17 @@ foreach ($package in $state.packages) {
         Invoke-TvAdb @('shell', "pm $operation --user $($state.user) $($package.name)")
     }
 }
+if ($state.launcherApk) {
+    Invoke-TvAdb @('install', '-r', (Join-Path $BackupPath $state.launcherApk))
+}
 Invoke-TvAdb @('shell', "cmd package set-home-activity --user $($state.user) $($state.home)")
 Invoke-TvAdb @('shell', 'input keyevent KEYCODE_HOME')
 if (-not $state.launcherInstalledBefore) {
     Invoke-TvAdb @('shell', "pm revoke --user $($state.user) $($state.launcherPackage) android.permission.ACCESS_FINE_LOCATION")
     Invoke-TvAdb @('shell', "pm disable-user --user $($state.user) $($state.launcherPackage)")
+}
+foreach ($package in $state.addedPackages) {
+    Invoke-TvAdb @('shell', "pm disable-user --user $($state.user) $package")
 }
 Invoke-TvAdb @('shell', 'cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME')
 Write-Host 'Original Home restored. Press Home on the remote.'

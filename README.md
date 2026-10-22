@@ -46,11 +46,12 @@ Undo everything with `tools/restore.sh <the same list>`.
 
 ## Windows / Xiaomi profile
 
-This checkout uses a compact **YouTube + Netflix** dock and Xiaomi Live TV for the Inputs fallback.
+This checkout uses a compact **YouTube + Netflix + Apple TV** dock, the default rotating nature
+wallpapers, and Xiaomi Live TV for the Inputs fallback. Apple TV was installed from Google Play.
 Casting, Miracast, USB media, voice search, streaming apps, and system updates remain enabled.
-Only the stock Google TV launcher and `com.google.android.tungsten.setupwraith` were disabled for
-user 0 after testing that setting the default launcher alone did not retain the Home-button choice.
-Nothing was uninstalled or cleared.
+The stock launcher, setupwraith, and 11 identified telemetry, demo, promotion, or Xiaomi-content
+packages are disabled for user 0. Nothing was uninstalled or cleared. See the exact scope and
+measured performance limits in [Windows deployment and controls](docs/windows-xiaomi.md).
 
 Build with JDK 17 and Android SDK platform/build-tools 34:
 
@@ -68,10 +69,10 @@ Restore using the pre-change backup folder:
 powershell -NoProfile -ExecutionPolicy Bypass -File tools/restore.ps1 -BackupPath "backup\YOUR-BACKUP"
 ```
 
-Alternatively, double-click `Restore-TV.cmd` inside that backup folder. The script asks for confirmation,
-restores the exact original enabled states and Home activity, revokes the new launcher's location grant,
-and disables the new launcher without uninstalling it. Backups and TV screenshots stay local and are
-git-ignored. See [Windows deployment and controls](docs/windows-xiaomi.md).
+Alternatively, double-click `Restore-TV.cmd` inside the selected backup folder. The script asks for
+confirmation, restores saved package states and Home, reinstalls the saved launcher APK when present,
+and disables newly added apps without uninstalling them. The original-install backup also revokes
+the new launcher's location grant and disables it. Backups and screenshots stay local and git-ignored.
 
 ## What's here
 
@@ -97,7 +98,7 @@ git-ignored. See [Windows deployment and controls](docs/windows-xiaomi.md).
   `launcher/assets/wallpapers/` (1920×1080 JPEGs, credits in `launcher/WALLPAPER-CREDITS.md`).
 - Deterministic D-pad focus, remembers the last tile, picks up newly installed apps on return.
 
-Change the dock: edit `config.xml`, then run `launcher/build-and-install.sh`.
+Change the dock: edit `config.xml`, then run `launcher/build-and-install.sh` on macOS or `launcher/build.ps1` on Windows.
 
 ## Gotchas we hit
 

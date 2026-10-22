@@ -3,6 +3,7 @@
     <string-array name="dock_apps">
         <item>com.google.android.youtube.tv</item>
         <item>com.netflix.ninja</item>
+        <item>com.apple.atve.androidtv.appletv</item>
     </string-array>
 
     <string-array name="hidden_apps">
